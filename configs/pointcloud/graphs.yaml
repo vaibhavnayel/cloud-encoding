@@ -14,7 +14,7 @@ model:
   c_dim: 512 
   z_dim: 0
 training:
-  out_dir:  out/pointcloud/onet
+  out_dir:  out/pointcloud/graph
   batch_size: 32
   visualize_every: 200
   checkpoint_every: 100

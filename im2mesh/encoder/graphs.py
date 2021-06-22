@@ -45,13 +45,12 @@ class DGCNN(nn.Module):
 
     def __init__(self, c_dim=128, dim=3, hidden_dim=128):
         super().__init__()
-        self.k = 20
+        self.k = 40
         self.bn1 = nn.BatchNorm2d(64)
         self.bn2 = nn.BatchNorm2d(64)
         self.bn3 = nn.BatchNorm2d(128)
         self.bn4 = nn.BatchNorm2d(256)
         self.bn5 = nn.BatchNorm1d(c_dim)
-        self.bn6 = nn.BatchNorm1d(512)
 
         self.conv1 = nn.Sequential(nn.Conv2d(6, 64, kernel_size=1, bias=False),
                                    self.bn1,
@@ -68,7 +67,7 @@ class DGCNN(nn.Module):
         self.conv5 = nn.Sequential(nn.Conv1d(512, c_dim, kernel_size=1, bias=False),
                                    self.bn5,
                                    nn.LeakyReLU(negative_slope=0.2))
-        self.linear1 = nn.Linear(c_dim*2, 512, bias=False)
+        self.linear1 = nn.Linear(c_dim*2, c_dim, bias=False)
     
 
     def forward(self, x):
@@ -97,6 +96,6 @@ class DGCNN(nn.Module):
         x2 = F.adaptive_avg_pool1d(x, 1).view(batch_size, -1)
         x = torch.cat((x1, x2), 1)
 
-        x = F.leaky_relu(self.bn6(self.linear1(x)), negative_slope=0.2)
+        x = self.linear1(x)
 
         return x
