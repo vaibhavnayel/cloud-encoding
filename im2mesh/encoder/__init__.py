@@ -1,6 +1,6 @@
 from im2mesh.encoder import (
     conv, pix2mesh_cond, pointnet,
-    psgn_cond, r2n2, voxels, graphs
+    psgn_cond, r2n2, voxels, graphs, pointnet2
 )
 
 
@@ -17,5 +17,6 @@ encoder_dict = {
     'psgn_cond': psgn_cond.PCGN_Cond,
     'voxel_simple': voxels.VoxelEncoder,
     'pixel2mesh_cond': pix2mesh_cond.Pix2mesh_Cond,
-    'dgcnn': graphs.DGCNN
+    'dgcnn': graphs.DGCNN,
+    'pointnet2': pointnet2.PointNet2MSG
 }
