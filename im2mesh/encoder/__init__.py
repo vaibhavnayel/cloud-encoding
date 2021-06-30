@@ -18,5 +18,6 @@ encoder_dict = {
     'voxel_simple': voxels.VoxelEncoder,
     'pixel2mesh_cond': pix2mesh_cond.Pix2mesh_Cond,
     'dgcnn': graphs.DGCNN,
-    'pointnet2': pointnet2.PointNet2MSG
+    'pointnet2': pointnet2.PointNet2MSG,
+    'pointnet2ssg': pointnet2.PointNet2SSG
 }

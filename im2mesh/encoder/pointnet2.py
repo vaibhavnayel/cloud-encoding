@@ -333,3 +333,30 @@ class PointNet2MSG(nn.Module):
         x = l3_points.view(batch_size, 1024)
         x = self.fc1(x)
         return x
+
+class PointNet2SSG(nn.Module):
+    ''' PointNet-based encoder network with Deep Hierarchical Features.
+
+    Args:
+        c_dim (int): dimension of latent code c
+        dim (int): input points dimension
+        hidden_dim (int): hidden dimension of the network
+    '''
+
+    def __init__(self, c_dim=128, dim=3, hidden_dim=128):
+        super().__init__()
+        self.sa1 = PointNetSetAbstraction(npoint=512, radius=0.2, nsample=32, in_channel=dim, mlp=[64, 64, 128], group_all=False)
+        self.sa2 = PointNetSetAbstraction(npoint=128, radius=0.4, nsample=64, in_channel=128 + 3, mlp=[128, 128, 256], group_all=False)
+        self.sa3 = PointNetSetAbstraction(npoint=None, radius=None, nsample=None, in_channel=256 + 3, mlp=[256, 512, 1024], group_all=True)
+        self.fc1 = nn.Linear(1024, c_dim)
+    
+    def forward(self, x):
+        x = x.transpose(2, 1)
+        batch_size = x.size(0)
+        # Since we have no normals we will pass None
+        l1_xyz, l1_points = self.sa1(x, None)
+        l2_xyz, l2_points = self.sa2(l1_xyz, l1_points)
+        l3_xyz, l3_points = self.sa3(l2_xyz, l2_points)
+        x = l3_points.view(batch_size, 1024)
+        x = self.fc1(x)
+        return x
