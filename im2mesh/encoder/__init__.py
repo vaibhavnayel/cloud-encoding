@@ -1,6 +1,7 @@
 from im2mesh.encoder import (
     conv, pix2mesh_cond, pointnet,
-    psgn_cond, r2n2, voxels, graphs, pointnet2
+    psgn_cond, r2n2, voxels, graphs, pointnet2,
+    deepsets
 )
 
 
@@ -19,5 +20,6 @@ encoder_dict = {
     'pixel2mesh_cond': pix2mesh_cond.Pix2mesh_Cond,
     'dgcnn': graphs.DGCNN,
     'pointnet2': pointnet2.PointNet2MSG,
-    'pointnet2ssg': pointnet2.PointNet2SSG
+    'pointnet2ssg': pointnet2.PointNet2SSG,
+    'deepsets_dtanh':deepsets.DTanh
 }
