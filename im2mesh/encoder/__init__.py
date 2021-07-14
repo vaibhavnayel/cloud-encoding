@@ -21,5 +21,6 @@ encoder_dict = {
     'dgcnn': graphs.DGCNN,
     'pointnet2': pointnet2.PointNet2MSG,
     'pointnet2ssg': pointnet2.PointNet2SSG,
-    'deepsets_dtanh':deepsets.DTanh
+    'deepsets_dtanh':deepsets.DTanh,
+    'deepsets_dtanhx2':deepsets.DTanh2X
 }
