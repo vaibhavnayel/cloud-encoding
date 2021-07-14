@@ -34,7 +34,7 @@ class PermEqui2_max(nn.Module):
     x = self.Gamma(x)
     x = x - xm
     return x
-  class PermEqui2_mean(nn.Module):
+class PermEqui2_mean(nn.Module):
   def __init__(self, in_dim, out_dim):
     super(PermEqui2_mean, self).__init__()
     self.Gamma = nn.Linear(in_dim, out_dim)
