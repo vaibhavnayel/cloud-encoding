@@ -34,7 +34,7 @@ class PermEqui2_max(nn.Module):
     x = self.Gamma(x)
     x = x - xm
     return x
-  class PermEqui2_mean(nn.Module):
+class PermEqui2_mean(nn.Module):
   def __init__(self, in_dim, out_dim):
     super(PermEqui2_mean, self).__init__()
     self.Gamma = nn.Linear(in_dim, out_dim)
@@ -170,3 +170,62 @@ def clip_grad(model, max_norm):
         for p in model.parameters():
             p.grad.data.mul_(clip_coef)
     return total_norm
+
+class DTanh2X(nn.Module):
+
+  def __init__(self,c_dim,  d_dim, x_dim=3, pool = 'mean'):
+    super(DTanh2X, self).__init__()
+    self.d_dim = d_dim
+    self.x_dim = x_dim
+
+    if pool == 'max':
+        self.phi = nn.Sequential(
+          PermEqui2_max(self.x_dim, self.d_dim),
+          nn.Tanh(),
+          PermEqui2_max(self.d_dim, self.d_dim * 2),
+          nn.Tanh(),
+          PermEqui2_max(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+        )
+    elif pool == 'max1':
+        self.phi = nn.Sequential(
+          PermEqui1_max(self.x_dim, self.d_dim),
+          nn.Tanh(),
+          PermEqui1_max(self.d_dim, self.d_dim * 2),
+          nn.Tanh(),
+          PermEqui1_max(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+        )
+    elif pool == 'mean':
+        self.phi = nn.Sequential(
+          PermEqui2_mean(self.x_dim, self.d_dim),
+          nn.Tanh(),
+          PermEqui2_mean(self.d_dim, self.d_dim * 2),
+          nn.Tanh(),
+          PermEqui2_mean(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+        )
+    elif pool == 'mean1':
+        self.phi = nn.Sequential(
+          PermEqui1_mean(self.x_dim, self.d_dim),
+          nn.Tanh(),
+          PermEqui1_mean(self.d_dim, self.d_dim * 2),
+          nn.Tanh(),
+          PermEqui1_mean(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+        )
+
+    self.ro = nn.Sequential(
+#       nn.Dropout(p=0.5),
+#       nn.Linear(self.d_dim, self.d_dim),
+#       nn.Tanh(),
+#       nn.Dropout(p=0.5),
+#       nn.Linear(self.d_dim, 40),
+#    )
+#    print(self)
+          nn.Linear(self.d_dim * 4, c_dim))
+  def forward(self, x):
+    phi_output = self.phi(x)
+    sum_output, _ = phi_output.max(1)
+    ro_output = self.ro(sum_output)
+    return ro_output
