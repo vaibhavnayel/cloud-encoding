@@ -126,6 +126,7 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
         'train': cfg['data']['train_split'],
         'val': cfg['data']['val_split'],
         'test': cfg['data']['test_split'],
+        'viz': cfg['data']['viz_split']
     }
 
     split = splits[mode]
