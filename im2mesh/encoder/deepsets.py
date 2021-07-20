@@ -186,6 +186,8 @@ class DTanh2X(nn.Module):
           nn.Tanh(),
           PermEqui2_max(self.d_dim * 2, self.d_dim * 4),
           nn.Tanh(),
+          PermEqui2_max(self.d_dim * 4, self.d_dim * 8),
+          nn.Tanh()
         )
     elif pool == 'max1':
         self.phi = nn.Sequential(
@@ -194,6 +196,8 @@ class DTanh2X(nn.Module):
           PermEqui1_max(self.d_dim, self.d_dim * 2),
           nn.Tanh(),
           PermEqui1_max(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+          PermEqui1_max(self.d_dim * 4, self.d_dim * 8),
           nn.Tanh(),
         )
     elif pool == 'mean':
@@ -204,6 +208,8 @@ class DTanh2X(nn.Module):
           nn.Tanh(),
           PermEqui2_mean(self.d_dim * 2, self.d_dim * 4),
           nn.Tanh(),
+          PermEqui2_mean(self.d_dim * 4, self.d_dim * 8),
+          nn.Tanh(),
         )
     elif pool == 'mean1':
         self.phi = nn.Sequential(
@@ -212,6 +218,8 @@ class DTanh2X(nn.Module):
           PermEqui1_mean(self.d_dim, self.d_dim * 2),
           nn.Tanh(),
           PermEqui1_mean(self.d_dim * 2, self.d_dim * 4),
+          nn.Tanh(),
+          PermEqui1_mean(self.d_dim * 4, self.d_dim * 8),
           nn.Tanh(),
         )
 
@@ -223,7 +231,7 @@ class DTanh2X(nn.Module):
 #       nn.Linear(self.d_dim, 40),
 #    )
 #    print(self)
-          nn.Linear(self.d_dim * 4, c_dim))
+          nn.Linear(self.d_dim * 8, c_dim))
   def forward(self, x):
     phi_output = self.phi(x)
     sum_output, _ = phi_output.max(1)

@@ -11,7 +11,7 @@ model:
   decoder: cbatchnorm
   encoder: deepsets_dtanhx2
   encoder_kwargs: 
-    d_dim: 36 
+    d_dim: 128 
     pool: max
   c_dim: 512  
   z_dim: 0
