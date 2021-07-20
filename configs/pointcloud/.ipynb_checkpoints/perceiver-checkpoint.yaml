@@ -8,17 +8,14 @@ data:
 model:
   encoder_latent: null
   decoder: cbatchnorm
-  encoder: dgcnn
+  encoder: perceiver
   encoder_kwargs:
-    hidden_dim: 512 
+    depth: 5
   c_dim: 512 
   z_dim: 0
 training:
-  out_dir:  out/pointcloud/graph
+  out_dir:  out/pointcloud/perceiver
   batch_size: 64
-  visualize_every: 1000
-  checkpoint_every: 100
-  validate_every: 2000
   model_selection_metric: iou
   model_selection_mode: maximize
 test:
