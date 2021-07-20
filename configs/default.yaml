@@ -7,6 +7,7 @@ data:
   train_split: train
   val_split: val
   test_split: test
+  viz_split: viz
   dim: 3
   points_file: points.npz
   points_iou_file: points.npz
